@@ -11,7 +11,7 @@ enum SWIPING_TYPE {
 /// The inputed [function] will be called by [SwipeDetector360Widget] when directed [SWIPING_TYPE] fires.
 ///
 /// In addition, in case of [SWIPING_TYPE.END], user's swiping needs to be in defined angle range.
-/// [activationFrom] and [activateTo] role degree. They must to be -180 ~ 180.
+/// [activationDegreeFrom] and [activateTo] role degree. They must to be -180 ~ 180.
 ///
 /// Followings are some exlample for case of [SWIPING_TYPE.END].
 /// Values from 0 ~ 90, the top-left quadrant swiping.
@@ -22,29 +22,33 @@ enum SWIPING_TYPE {
 /// Values from -90 ~ 90, the left swiping.
 class SwipeDetector360Function {
   SwipeDetector360Function({
-    this.activationFrom = -180,
-    this.activationTo = 180,
+    this.activationDegreeFrom = -180,
+    this.activationDegreeTo = 180,
     @required this.function,
     @required this.swipingType,
   }) {
-    assert(activationFrom >= -181);
-    assert(activationTo <= 181);
-    assert(activationFrom <= activationTo);
+    assert(activationDegreeFrom >= -181);
+    assert(activationDegreeTo <= 181);
+    assert(activationDegreeFrom <= activationDegreeTo);
     assert(function != null);
   }
 
-  final double activationFrom;
-  final double activationTo;
+  final double activationDegreeFrom;
+  final double activationDegreeTo;
+
+  /// Type of argument must be DragStartDetails, DragUpdateDetails or DragEndDetails.
   final Function(dynamic) function;
   final SWIPING_TYPE swipingType;
 
-  /// Return if [activationFrom] degree < inputed [degree] < [activationTo] degree then [true] alse [false].
+  /// Return if [activationDegreeFrom] degree <= inputed [degree] <= [activationDegreeTo] degree then [true] alse [false].
   bool isInActivationRnage(double degree) {
     if (swipingType != SWIPING_TYPE.END) {
       return true;
     }
 
-    return (activationFrom < degree && degree < activationTo) ? true : false;
+    return (activationDegreeFrom <= degree && degree <= activationDegreeTo)
+        ? true
+        : false;
   }
 }
 

@@ -20,23 +20,24 @@ class _WidgetSample4SwipeDetector360Status
 
     return SwipeDetector360Widget(
       functions: funcs.sampleFunctions,
-      isExceptTapping: false,
       child: StreamBuilder(
         stream: _streamController.stream,
         builder: (context, snapshot) {
           return Container(
             width: double.infinity,
             height: double.infinity,
-            color: Colors.blue[100],
-            child: Column(
-              children: <Widget>[
-                Center(
-                  child: Text(snapshot.hasData ? snapshot.data[0] : 'swipe'),
-                ),
-                Center(
-                  child: Text(snapshot.hasData ? snapshot.data[1] : 'here!'),
-                ),
-              ],
+            color: Colors.blue[50],
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  Center(
+                    child: Text(snapshot.hasData ? snapshot.data[0] : 'swipe'),
+                  ),
+                  Center(
+                    child: Text(snapshot.hasData ? snapshot.data[1] : 'here!'),
+                  ),
+                ],
+              ),
             ),
           );
         },
@@ -86,8 +87,8 @@ class _SwipeDetector360FunctionsSample {
           List<String> s = _detectedInformation(d, 'swipe to Bottom-right : ');
           sink.add(s);
         },
-        activationFrom: -0.1,
-        activationTo: 90.1,
+        activationDegreeFrom: 0.1,
+        activationDegreeTo: 90,
         swipingType: SWIPING_TYPE.END,
       ),
     );
@@ -98,8 +99,8 @@ class _SwipeDetector360FunctionsSample {
           List<String> s = _detectedInformation(d, 'swipe to Bottom-left : ');
           sink.add(s);
         },
-        activationFrom: 89.9,
-        activationTo: 180.1,
+        activationDegreeFrom: 90.1,
+        activationDegreeTo: 180,
         swipingType: SWIPING_TYPE.END,
       ),
     );
@@ -110,8 +111,8 @@ class _SwipeDetector360FunctionsSample {
           List<String> s = _detectedInformation(d, 'swipe to Top-right : ');
           sink.add(s);
         },
-        activationFrom: -90.1,
-        activationTo: 0.1,
+        activationDegreeFrom: -89.9,
+        activationDegreeTo: 0.0,
         swipingType: SWIPING_TYPE.END,
       ),
     );
@@ -122,8 +123,8 @@ class _SwipeDetector360FunctionsSample {
           List<String> s = _detectedInformation(d, 'swipe to Top-left : ');
           sink.add(s);
         },
-        activationFrom: -180.1,
-        activationTo: -89.9,
+        activationDegreeFrom: -180,
+        activationDegreeTo: -90,
         swipingType: SWIPING_TYPE.END,
       ),
     );
@@ -145,9 +146,12 @@ class _SwipeDetector360FunctionsSample {
     } else if (d is DragEndDetails) {
       final DragEndDetails dd = d;
       strings.add(prefix);
-      strings.add(dd.velocity.pixelsPerSecond.toString() +
-          ' --> degree : ' +
-          (dd.velocity.pixelsPerSecond.direction * 360 / 2 / pi).toString());
+      strings.add(
+        dd.velocity.pixelsPerSecond.toString() +
+            ' --> degree : ' +
+            (dd.velocity.pixelsPerSecond.direction * 360 / 2 / pi)
+                .toStringAsFixed(2),
+      );
     } else {
       strings.add('Some bugs are living in the code.');
       strings.add('Need to fix.');
